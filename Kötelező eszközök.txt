@@ -1,0 +1,8 @@
+1x LCD1602 display
+20db jumper
+1x Arduino Pro Micro 
+1x NeoPixel LED Strip 
+1x Gesture sensor 
+1x InfraRed Remote Transmitter and Receiver
+2db 10kOhm os ellenállás
+2db 220Ohm os ellenállás
