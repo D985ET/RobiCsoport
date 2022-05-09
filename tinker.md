@@ -1,0 +1,2 @@
+Szimulátor jelen állása: https://www.tinkercad.com/things/k4becDgafex?sharecode=finOdx_FM6SsCI7PJRu4UT4ChaJ_EEO8YxdwGTxxR5E
+Állapot-átmenet gráf: https://www.yworks.com/yed-live/?file=https://gist.githubusercontent.com/nagytoth1/5fd4ece9b0c8f1522d84955f3169dce4/raw/4bf30538a1ff464a92c154719fb03f45ed75185a/allapot_atmenet_robot
