@@ -9,3 +9,4 @@ https://www.yworks.com/yed-live/?file=https://gist.githubusercontent.com/nagytot
 - *2022.05.06: Nagy-Tóth Bence - TinkerCad felület elkészítése, InfraRed távirányító és vevőegység, NeoPixel LED-szalag (10 db) hozzáadása*
 - *2022.05.09: Sipos Levente - LCD kijelző bekötése, LCD-vezérlőkód tanulmányozása*
 - *2022.05.09: Nagy-Tóth Bence - szimulátor Circuit Design felület letisztázása*
+- *2022.05.11: Nagy-Tóth Bence - szimulátor felkommentezése technikai információkkal*
