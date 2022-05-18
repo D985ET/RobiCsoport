@@ -1,17 +1,25 @@
-#include "Adafruit_NeoPixel.h"
+#include <LiquidCrystal.h>     //LED DISPLAY
+#include <Adafruit_NeoPixel.h> //LED NeoPixel
+#include <IRremote.h>          //Remote Control + Receiver
 #include <ctype.h>
 #ifdef __AVR__
  #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
 #endif
-
-// Which pin on the Arduino is connected to the NeoPixels?
 
 #pragma region SETTINGS
 //globális változók
 unsigned char* tomb; //tömböt kívül deklarálom, hogy ne kelljen minden metódusnak átadni paraméterként (egyszerűbb kód)
 
 //pinkiosztások
-#define PIN  13 
+#define NEOPIXEL_PIN  13
+#define RECEIVER_PIN 9
+//LED-display-pins
+#define en 2
+#define rs 3
+#define d4 7
+#define d5 6
+#define d6 5
+#define d7 4
 
 //konstansok
 #define ARRAY_SIZE 10 // Popular NeoPixel ring size
@@ -20,7 +28,8 @@ unsigned char* tomb; //tömböt kívül deklarálom, hogy ne kelljen minden met�
 // and which pin to use to send signals. Note that for older NeoPixel
 // strips you might need to change the third parameter -- see the
 // strandtest example for more information on possible values.
-Adafruit_NeoPixel pixels(ARRAY_SIZE, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels(ARRAY_SIZE, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 #define DELAYVAL 1000 // Time (in milliseconds) to pause between pixels
 
@@ -43,41 +52,26 @@ void loop() {
   pixels.clear(); // Set all pixel colors to 'off'
 }
 
-void swap(unsigned char *x1, unsigned char *x2)
+void printArr(unsigned char *array, unsigned char *len) // tetszőleges tömb kiíratása
 {
-    unsigned char temp = *x1;
-    *x1 = *x2;
-    *x2 = temp;
-}
-
-void printArr(unsigned char* array, unsigned char* len) //tetszőleges tömb kiíratása
-{
-    //kétjegyű szám: 3 helyet foglal el a kijelzőn (stringen) - 5*3 = 15 helyet foglal maximum a kijelző 1.sorában
-    char *str = (char*) malloc(sizeof(char) * (*len) * 3);
-    char currElement[3]; //egy elem mindig max. 3 karakter lesz
-    unsigned char i;
-    for (i = 0; i < ARRAY_SIZE - 1; i++){
+  // kétjegyű szám: 3 helyet foglal el a kijelzőn (stringen) - 5*3 = 15 helyet foglal maximum a kijelző 1.sorában
+  char *str = (char *)malloc(sizeof(char) * (*len) * 3);
+  char currElement[3]; // egy elem mindig max. 3 karakter lesz
+  unsigned char i;
+  for (i = 0; i < ARRAY_SIZE - 1; i++)
+  {
     sprintf(currElement, "%d, ", array[i]);
     strcat(str, currElement);
-    }
+  }
   sprintf(currElement, "%d\0", array[i]); // utolsó szám + \0 karakter
   strcat(str, currElement);
 
-    //kijelző: string kiírása a kijelzőre
-    printf("%s\n", str);
-    free(str);
+  // kijelző: string kiírása a kijelzőre
+  printf("%s\n", str);
+  free(str);
 }
 
-//kék színnel felvillannak a tömb elemei, rendezőalgoritmus kezdete előtt
-void lightupArray()
-{
-  for (int i = 0; i < ARRAY_SIZE; i++)
-  {
-    pixels.setPixelColor(i, pixels.Color(237, 28, 36)); // light blue
-    pixels.show();
-    delay(DELAYVAL);
-  }
-}
+#pragma region TombFeltoltes
 
 unsigned char inputElement() // egyetlen kétjegyű szám bekérése, visszatér egy leendő tömbelemmel
 {
@@ -119,6 +113,53 @@ unsigned char inputElement() // egyetlen kétjegyű szám bekérése, visszatér
   return arrNumber; // egésszé alakított tömbelem
 }
 
+char* receiverHandling(){ //returns string "0"..."9", "ND", "OK"
+    //TODO: determine, which HEX-code belongs to which value
+    if (IrReceiver.decode())
+    {
+      switch (IrReceiver.decodedIRData.decodedRawData)
+      {
+      case 0xF30CBF00:
+        Serial.println("0");
+        break; // Button 0
+      case 0xEF10BF00:
+        Serial.println("1");
+        break; // Button 1
+      case 0xEE11BF00:
+        Serial.println("2");
+        break; // Button 2
+      case 0xED12BF00:
+        Serial.println("3");
+        break; // Button 3
+      case 0xEB14BF00:
+        Serial.println("4");
+        break; // Button 4
+      case 0xEA15BF00:
+        Serial.println("5");
+        break; // Button 5
+      case 0xE916BF00:
+        Serial.println("6");
+        break; // Button 6
+      case 0xE718BF00:
+        Serial.println("7");
+        break; // Button 7
+      case 0xE619BF00:
+        Serial.println("8");
+        break; // Button 8
+      case 0xE51ABF00:
+        Serial.println("9");
+        break; // Button 9
+      case 0xFD02BF00:
+        return "OK";
+        break;
+      default:
+        Serial.println(IrReceiver.decodedIRData.decodedRawData, HEX);
+        break;
+      }
+      IrReceiver.resume();
+    }
+}
+
 bool arrayFillWithRC() //elmenti egy ciklusban a rendezendő tömb elemeit
 {
   for (unsigned char i = 0; i < ARRAY_SIZE; i++)
@@ -127,7 +168,44 @@ bool arrayFillWithRC() //elmenti egy ciklusban a rendezendő tömb elemeit
   //mikor lesz hamis a tömbfeltöltés?
 }
 
-//RENDEZŐALGORITMUSOK
+#pragma endregion
+
+#pragma region Kivalaszt1
+
+void welcome()
+{
+  Serial.begin(9600);
+  IrReceiver.begin(RECEIVER_PIN, ENABLE_LED_FEEDBACK); // start the receiver
+  lcd.begin(16, 2);
+
+  lcd.setCursor(0, 0); // 1.sorba ír
+  lcd.print("Rendezes");
+  delay(1000);
+  lcd.setCursor(0, 1); // 2.sorba ír
+  delay(1000);
+  lcd.print("Tombfeltoltes");
+}
+
+#pragma endregion
+
+#pragma region Rendezes
+// kék színnel felvillannak a tömb elemei, rendezőalgoritmus kezdete előtt
+void lightupArray()
+{
+  for (int i = 0; i < ARRAY_SIZE; i++)
+  {
+    pixels.setPixelColor(i, pixels.Color(237, 28, 36)); // light blue
+    pixels.show();
+    delay(DELAYVAL);
+  }
+}
+
+void swap(unsigned char *x1, unsigned char *x2)
+{
+  unsigned char temp = *x1;
+  *x1 = *x2;
+  *x2 = temp;
+}
 void minSelectSort()
 {
   unsigned char *copy = (unsigned char *)malloc(sizeof(unsigned char) * ARRAY_SIZE);
@@ -299,3 +377,4 @@ void insertionSort()
   printArr(tomb, ARRAY_SIZE);
   free(copy);
 }
+#pragma endregion Rendezes
