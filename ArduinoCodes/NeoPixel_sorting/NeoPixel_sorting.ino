@@ -1,6 +1,6 @@
+#include <IRremote.hpp> //InfraRed Remote Controller
 #include <LiquidCrystal.h>     //LED DISPLAY
 #include <Adafruit_NeoPixel.h> //LED NeoPixel
-#include <IRremote.h>          //Remote Control + Receiver
 #include <ctype.h>
 #ifdef __AVR__
  #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
@@ -20,9 +20,11 @@ unsigned char* tomb; //tömböt kívül deklarálom, hogy ne kelljen minden met�
 #define d5 6
 #define d6 5
 #define d7 4
-
+#define GREEN 0, 150, 0
+#define RED 150, 0 , 0
+#define BLUE 131, 238, 255
 //konstansok
-#define ARRAY_SIZE 10 // Popular NeoPixel ring size
+const unsigned char ARRAY_SIZE = 5; // Popular NeoPixel ring size
 
 // When setting up the NeoPixel library, we tell it how many pixels,
 // and which pin to use to send signals. Note that for older NeoPixel
@@ -194,7 +196,7 @@ void lightupArray()
 {
   for (int i = 0; i < ARRAY_SIZE; i++)
   {
-    pixels.setPixelColor(i, pixels.Color(237, 28, 36)); // light blue
+    pixels.setPixelColor(i, pixels.Color(BLUE)); // light blue
     pixels.show();
     delay(DELAYVAL);
   }
@@ -210,41 +212,42 @@ void minSelectSort()
 {
   unsigned char *copy = (unsigned char *)malloc(sizeof(unsigned char) * ARRAY_SIZE);
   memcpy(copy, tomb, ARRAY_SIZE);
-
+  lightupArray();
+  delay(DELAYVAL);
   unsigned char min_i, i, j;
   for (i = 0; i < ARRAY_SIZE - 1; i++)
   {
-    pixels.setPixelColor(i, pixels.Color(237, 28, 36)); // red
+    pixels.setPixelColor(i, pixels.Color(RED)); // az aktuális kiválasztott elem, aminek a helyére megy a minimum
     pixels.show();
     min_i = i;
     for (j = (unsigned char)(i + 1); j < ARRAY_SIZE; j++)
     {
-      pixels.setPixelColor(j, pixels.Color(237, 28, 36)); // red
+      pixels.setPixelColor(j, pixels.Color(RED)); // amit hasonlít, keresi minimumot
       pixels.show();
       if (tomb[j] < tomb[min_i])
         min_i = j;
-      delay(DELAYVAL);
-      pixels.setPixelColor(j, pixels.Color(131, 238, 255)); // light blue
+      delay(DELAYVAL); //egy ideig piros
+      pixels.setPixelColor(j, pixels.Color(BLUE)); // visszaváltja kékre
       pixels.show();
     }
 
     if (min_i != i)
     {
-      pixels.setPixelColor(min_i, pixels.Color(0, 150, 0)); // green
-      pixels.show();
+      pixels.setPixelColor(min_i, pixels.Color(GREEN)); // a minimum helyén zöldre vált
+      pixels.show(); 
       delay(DELAYVAL);
-      swap(&tomb[i], &tomb[min_i]);
-      pixels.setPixelColor(i, pixels.Color(0, 150, 0));  // green
-      pixels.setPixelColor(min_i, pixels.Color(237, 28, 36)); // red
+      swap(&tomb[i], &tomb[min_i]); //csere
+      pixels.setPixelColor(i, pixels.Color(GREEN));  //ahova teszi a minimumot, az lesz zöld
+      pixels.setPixelColor(min_i, pixels.Color(RED)); // a cserélt elem piros lesz
       pixels.show();
-      delay(DELAYVAL);
-      pixels.setPixelColor(min_i, pixels.Color(131, 238, 255)); // light blue
+      delay(DELAYVAL); //vár
+      pixels.setPixelColor(min_i, pixels.Color(BLUE)); // visszavált az alapszínre, kékre
       pixels.show();
       delay(DELAYVAL);
     }
     else
     {
-      pixels.setPixelColor(i, pixels.Color(0, 150, 0)); // green
+      pixels.setPixelColor(i, pixels.Color(GREEN)); //ha helyben van a legkisebb, akkor egyből zöldre vált, a rendezett rész folyamatosan zölddé válik
       pixels.show();
       delay(DELAYVAL);
     }
@@ -261,84 +264,76 @@ void bubbleSort()
 {
   unsigned char *copy = (unsigned char *)malloc(sizeof(unsigned char) * ARRAY_SIZE);
   memcpy(copy, tomb, ARRAY_SIZE);
-
+  lightupArray(); //felvillan minden kékkel
+  delay(DELAYVAL);
   unsigned char i, j;
   for (i = 0; i < ARRAY_SIZE - 1; i++)
   {
     for (j = 0; j < ARRAY_SIZE - i - 1; j++)
     {
-      pixels.setPixelColor(j, pixels.Color(237, 28, 36));
-      pixels.setPixelColor(j + 1, pixels.Color(237, 28, 36));
+      pixels.setPixelColor(j, pixels.Color(RED)); //szomszédos elemeket pirosra váltja
+      pixels.setPixelColor(j + 1, pixels.Color(RED));
       pixels.show();
       delay(DELAYVAL);
       if (tomb[j] > tomb[j + 1])
       {
         swap(&tomb[j], &tomb[j + 1]);
-        pixels.setPixelColor(j, pixels.Color(131, 238, 255));
-        pixels.setPixelColor(j + 1, pixels.Color(131, 238, 255));
-        pixels.show();
-        delay(DELAYVAL);
       }
-      else
-      {
-        pixels.setPixelColor(j, pixels.Color(131, 238, 255));
-        pixels.setPixelColor(j + 1, pixels.Color(131, 238, 255));
-        pixels.show();
-        delay(DELAYVAL);
-      }
+      pixels.setPixelColor(j, pixels.Color(BLUE)); //a szomszédos elemeket visszaváltja kékre
+      pixels.setPixelColor(j + 1, pixels.Color(BLUE));
+      pixels.show();
+      delay(DELAYVAL);
     }
-    pixels.setPixelColor(j + 1, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(ARRAY_SIZE - i - 1, pixels.Color(GREEN)); //a rendezett elem az utolsó lesz
     pixels.show();
     delay(DELAYVAL);
   }
-
-  puts("Eredeti:");
-  printArr(copy, ARRAY_SIZE);
-  puts("Rendezett:");
-  printArr(tomb, ARRAY_SIZE);
-  free(copy);
-}
+}    
+   
 void cocktailSort()
 {
-  unsigned char *copy = malloc(sizeof(unsigned char) * ARRAY_SIZE);
+  unsigned char *copy = (unsigned char *) malloc(sizeof(unsigned char) * ARRAY_SIZE);
   memcpy(copy, tomb, ARRAY_SIZE);
-
+  lightupArray();
+  delay(DELAYVAL);
   unsigned char i, j, k;
   for (i = 0; i < ARRAY_SIZE - 1; i++)
   {
-    for (j = 0; j < ARRAY_SIZE - i - 1; j++)
+    for (j = 0; j < ARRAY_SIZE - i - 1; j++) //felfelé buborékol
     {
-      pixels.setPixelColor(j, pixels.Color(237, 28, 36));
-      pixels.setPixelColor(j + 1, pixels.Color(237, 28, 36));
+      pixels.setPixelColor(j, pixels.Color(RED)); 
+      pixels.setPixelColor(j + 1, pixels.Color(RED));
       pixels.show();
       delay(DELAYVAL);
       if (tomb[j] > tomb[j + 1])
         swap(&tomb[j], &tomb[j + 1]);
-      pixels.setPixelColor(j, pixels.Color(131, 238, 255));
-      pixels.setPixelColor(j + 1, pixels.Color(131, 238, 255));
+      pixels.setPixelColor(j, pixels.Color(BLUE));
+      pixels.setPixelColor(j + 1, pixels.Color(BLUE));
       pixels.show();
       delay(DELAYVAL);
     }
-    pixels.setPixelColor(j + 1, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(j + 1, pixels.Color(GREEN));
     pixels.show();
     delay(DELAYVAL);
     k = (unsigned char)(ARRAY_SIZE - i - 1);
 
-    while (k > 1 + i)
+    while (k > i)
     {
-      pixels.setPixelColor(k, pixels.Color(237, 28, 36));
-      pixels.setPixelColor(k - 1, pixels.Color(237, 28, 36));
+      pixels.setPixelColor(k, pixels.Color(RED));
+      pixels.setPixelColor(k - 1, pixels.Color(RED));
       pixels.show();
       delay(DELAYVAL);
       if (tomb[k - 1] > tomb[k])
         swap(&tomb[k - 1], &tomb[k]);
-      k--;
-      pixels.setPixelColor(k, pixels.Color(131, 238, 255));
-      pixels.setPixelColor(k - 1, pixels.Color(131, 238, 255));
+      
+      pixels.setPixelColor(k, pixels.Color(BLUE));
+      pixels.setPixelColor(k - 1, pixels.Color(BLUE));
       pixels.show();
       delay(DELAYVAL);
+
+      k--;
     }
-    pixels.setPixelColor(k - 1, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(k, pixels.Color(GREEN));
     pixels.show();
     delay(DELAYVAL);
   }
@@ -351,24 +346,36 @@ void cocktailSort()
 }
 void insertionSort()
 {
-  unsigned char *copy = malloc(sizeof(unsigned char) * ARRAY_SIZE);
+  unsigned char *copy = (unsigned char *) malloc(sizeof(unsigned char) * ARRAY_SIZE);
   memcpy(copy, tomb, ARRAY_SIZE);
-
+  lightupArray(); //felvillantjuk a tömb elemeit kékkel
+  delay(DELAYVAL);
   unsigned char i, elementToInsert, j;
-  for (i = 1; i < ARRAY_SIZE; i++)
+  pixels.setPixelColor(0, pixels.Color(GREEN)); //az első elem az fixen rendezett
+  pixels.show();
+  delay(DELAYVAL);
+
+  for (i = 1; i < ARRAY_SIZE; i++) //a 0. elem az rendezett, ezért 1-től kezdjük a beszúrást
   {
-    elementToInsert = tomb[i];
-    j = i - 1;
-    pixels.setPixelColor(elementToInsert, pixels.Color(237, 28, 36));
+    elementToInsert = tomb[i]; //kimentjük a beszúrandó elemet
+    j = i - 1; //a beszúrandó elem előtti elem, a legutolsó rendezett rész eleme
+    pixels.setPixelColor(i, pixels.Color(RED)); //beszúrásra kiválasztott elemet fevillantjuk pirossal
     pixels.show();
     delay(DELAYVAL);
-    while (j >= 0 && tomb[j] > elementToInsert)
+    while (j >= 0 && tomb[j] > elementToInsert) //megkeressük a beszúrandó elem helyét a rendezett részen belül
     {
-      //TODO
+      
+      pixels.setPixelColor(j+1, pixels.Color(GREEN)); 
+      pixels.setPixelColor(j, pixels.Color(RED));
+      pixels.show();
       tomb[j + 1] = tomb[j];
       j = (unsigned char)(j - 1);
+      delay(DELAYVAL);
     }
     tomb[j + 1] = elementToInsert;
+    pixels.setPixelColor(j+1, pixels.Color(GREEN)); //beszúrásra kiválasztott elemet fevillantjuk pirossal
+    pixels.show();
+    delay(DELAYVAL);
   }
 
   puts("Eredeti:");
