@@ -252,6 +252,8 @@ void minSelectSort()
       delay(DELAYVAL);
     }
   }
+  pixels.setPixelColor(i, pixels.Color(GREEN)); //ha helyben van a legkisebb, akkor egyből zöldre vált, a rendezett rész folyamatosan zölddé válik
+  pixels.show();
 
   // kijelző: 1.sor: rendezett tömb, 2.sor: az eredeti tömb másolata
   puts("Eredeti:");
@@ -288,7 +290,11 @@ void bubbleSort()
     pixels.show();
     delay(DELAYVAL);
   }
-}    
+  pixels.setPixelColor(0, pixels.Color(GREEN)); //a rendezett elem az utolsó lesz
+  pixels.show();
+  delay(DELAYVAL);
+}
+    
    
 void cocktailSort()
 {
@@ -299,7 +305,7 @@ void cocktailSort()
   unsigned char i, j, k;
   for (i = 0; i < ARRAY_SIZE - 1; i++)
   {
-    for (j = 0; j < ARRAY_SIZE - i - 1; j++) //felfelé buborékol
+    for (j = i; j < ARRAY_SIZE - i - 1; j++) //felfelé buborékol
     {
       pixels.setPixelColor(j, pixels.Color(RED)); 
       pixels.setPixelColor(j + 1, pixels.Color(RED));
@@ -312,10 +318,10 @@ void cocktailSort()
       pixels.show();
       delay(DELAYVAL);
     }
-    pixels.setPixelColor(j + 1, pixels.Color(GREEN));
+    pixels.setPixelColor(j, pixels.Color(GREEN));
     pixels.show();
     delay(DELAYVAL);
-    k = (unsigned char)(ARRAY_SIZE - i - 1);
+    k = (unsigned char)(ARRAY_SIZE - i - 2);
 
     while (k > i)
     {
@@ -330,14 +336,12 @@ void cocktailSort()
       pixels.setPixelColor(k - 1, pixels.Color(BLUE));
       pixels.show();
       delay(DELAYVAL);
-
       k--;
     }
     pixels.setPixelColor(k, pixels.Color(GREEN));
     pixels.show();
     delay(DELAYVAL);
   }
-
   puts("Eredeti:");
   printArr(copy, ARRAY_SIZE);
   puts("Rendezett:");
