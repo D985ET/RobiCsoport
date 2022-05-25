@@ -1,20 +1,26 @@
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
 #include <LiquidCrystal.h>     //LED DISPLAY
 #include <Adafruit_NeoPixel.h> //LED NeoPixel
 
-unsigned char tomb[] = {9, 1, 5, 3, 7};
+LiquidCrystal_I2C lcd(0x27,20,4); 
+int tomb[] = {9, 7, 5, 3, 1};
 #define NEOPIXEL_PIN 4
 
 #define GREEN 0, 150, 0
 #define RED 150, 0 , 0
 #define BLUE 131, 238, 255
 
-const unsigned char ARRAY_SIZE = 5;
+const int ARRAY_SIZE = 5;
 Adafruit_NeoPixel pixels(ARRAY_SIZE, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 #define DELAYVAL 1000
 
 void setup() {
   // put your setup code here, to run once:
+  lcd.init();
+  lcd.init();
+  lcd.backlight();
   pixels.begin();
   insertionSort();
 }
@@ -36,25 +42,35 @@ void lightupArray()
   }
 }
 
-void swap(unsigned char *x1, unsigned char *x2)
+void printArr(int tomb[], int len) {
+  int i;
+  for (i = 0; i < len; ++i) {
+    lcd.print(String(String(tomb[i]) + ' '));
+  }
+}
+
+void swap(int *x1, int *x2)
 {
-  unsigned char temp = *x1;
+  int temp = *x1;
   *x1 = *x2;
   *x2 = temp;
 }
 void minSelectSort()
 {
-  unsigned char *copy = (unsigned char *)malloc(sizeof(unsigned char) * ARRAY_SIZE);
-  memcpy(copy, tomb, ARRAY_SIZE);
+  lcd.setCursor(0, 0);
+  lcd.print("E:");
+  printArr(tomb, ARRAY_SIZE);
+  lcd.setCursor(0, 1);
+  lcd.print("Calculating...");
   lightupArray();
   delay(DELAYVAL);
-  unsigned char min_i, i, j;
+  int min_i, i, j;
   for (i = 0; i < ARRAY_SIZE - 1; i++)
   {
     pixels.setPixelColor(i, pixels.Color(RED)); // az aktuális kiválasztott elem, aminek a helyére megy a minimum
     pixels.show();
     min_i = i;
-    for (j = (unsigned char)(i + 1); j < ARRAY_SIZE; j++)
+    for (j = (int)(i + 1); j < ARRAY_SIZE; j++)
     {
       pixels.setPixelColor(j, pixels.Color(RED)); // amit hasonlít, keresi minimumot
       pixels.show();
@@ -88,14 +104,23 @@ void minSelectSort()
   }
   pixels.setPixelColor(i, pixels.Color(GREEN)); //ha helyben van a legkisebb, akkor egyből zöldre vált, a rendezett rész folyamatosan zölddé válik
   pixels.show();
+
+  lcd.setCursor(0, 1);
+  lcd.print("R:");
+  printArr(tomb, ARRAY_SIZE);  
 }
 void bubbleSort()
 {
-  unsigned char *copy = (unsigned char *)malloc(sizeof(unsigned char) * ARRAY_SIZE);
-  memcpy(copy, tomb, ARRAY_SIZE);
+  lcd.setCursor(0, 0);
+  lcd.print("E:");
+  printArr(tomb, ARRAY_SIZE);
+  lcd.setCursor(0, 1);
+  lcd.print("Calculating...");
+  /*unsigned char *copy = (unsigned char *)malloc(sizeof(unsigned char) * ARRAY_SIZE);
+  memcpy(copy, tomb, ARRAY_SIZE);*/
   lightupArray(); //felvillan minden kékkel
   delay(DELAYVAL);
-  unsigned char i, j;
+  int i, j;
   for (i = 0; i < ARRAY_SIZE - 1; i++)
   {
     for (j = 0; j < ARRAY_SIZE - i - 1; j++)
@@ -120,15 +145,22 @@ void bubbleSort()
   pixels.setPixelColor(0, pixels.Color(GREEN)); //a rendezett elem az utolsó lesz
   pixels.show();
   delay(DELAYVAL);
+
+  lcd.setCursor(0, 1);
+  lcd.print("R:");
+  printArr(tomb, ARRAY_SIZE);
 }    
    
 void cocktailSort()
 {
-  unsigned char *copy = (unsigned char *) malloc(sizeof(unsigned char) * ARRAY_SIZE);
-  memcpy(copy, tomb, ARRAY_SIZE);
+  lcd.setCursor(0, 0);
+  lcd.print("E:");
+  printArr(tomb, ARRAY_SIZE);
+  lcd.setCursor(0, 1);
+  lcd.print("Calculating...");
   lightupArray();
   delay(DELAYVAL);
-  unsigned char i, j, k;
+  int i, j, k;
   for (i = 0; i < ARRAY_SIZE - 1; i++)
   {
     for (j = i; j < ARRAY_SIZE - i - 1; j++) //felfelé buborékol
@@ -147,7 +179,7 @@ void cocktailSort()
     pixels.setPixelColor(j, pixels.Color(GREEN));
     pixels.show();
     delay(DELAYVAL);
-    k = (unsigned char)(ARRAY_SIZE - i - 2);
+    k = (int)(ARRAY_SIZE - i - 2);
 
     while (k > i)
     {
@@ -167,15 +199,23 @@ void cocktailSort()
     pixels.setPixelColor(k, pixels.Color(GREEN));
     pixels.show();
     delay(DELAYVAL);
+
+    lcd.setCursor(0, 1);
+    lcd.print("R:");
+    printArr(tomb, ARRAY_SIZE);  
   }
 }
 void insertionSort()
 {
-  unsigned char *copy = (unsigned char *) malloc(sizeof(unsigned char) * ARRAY_SIZE);
-  memcpy(copy, tomb, ARRAY_SIZE);
+  lcd.setCursor(0, 0);
+  lcd.print("E:");
+  printArr(tomb, ARRAY_SIZE);
+  lcd.setCursor(0, 1);
+  lcd.print("Calculating...");
+  
   lightupArray(); //felvillantjuk a tömb elemeit kékkel
   delay(DELAYVAL);
-  unsigned char i, elementToInsert, j;
+  int i, elementToInsert, j;
   pixels.setPixelColor(0, pixels.Color(GREEN)); //az első elem az fixen rendezett
   pixels.show();
   delay(DELAYVAL);
@@ -194,7 +234,7 @@ void insertionSort()
       pixels.setPixelColor(j, pixels.Color(RED));
       pixels.show();
       tomb[j + 1] = tomb[j];
-      j = (unsigned char)(j - 1);
+      j = (int)(j - 1);
       delay(DELAYVAL);
     }
     tomb[j + 1] = elementToInsert;
@@ -202,5 +242,9 @@ void insertionSort()
     pixels.show();
     delay(DELAYVAL);
   }
+
+    lcd.setCursor(0, 1);
+    lcd.print("R:");
+    printArr(tomb, ARRAY_SIZE); 
 }
 #pragma endregion Rendezes
