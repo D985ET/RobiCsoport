@@ -13,12 +13,8 @@
 #define NEOPIXEL_PIN  13
 #define RECEIVER_PIN 9
 //LED-display-pins
-#define en 2
-#define rs 3
-#define d4 7
-#define d5 6
-#define d6 5
-#define d7 4
+#define SDA 2
+#define SCL 3
 #define GREEN 0x009600
 #define RED 0x960000
 #define BLUE 0x83EEFF
@@ -37,7 +33,7 @@ const uint8_t ARRAY_SIZE = 5; // Popular NeoPixel ring size
 // strips you might need to change the third parameter -- see the
 // strandtest example for more information on possible values.
 Adafruit_NeoPixel pixels(ARRAY_SIZE, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
 #define DELAYVAL 1000 // Time (in milliseconds) to pause between pixels
 #pragma endregion
@@ -80,47 +76,57 @@ void printArr(uint8_t *array, uint8_t *len) // tetszőleges tömb kiíratása
 
 #pragma region TombFeltoltes
 
+bool isNumeric(char* source) //eldönti egy string bemenetről, hogy szám-e
+{
+  //megvizsgálja, hogy bevitt érték szám-e
+  while(source[i] != '\0'){ //amíg nem érjük el a "string vége" karaktert
+    if(!isdigit(source[i])) //ha talál egy olyat is a ciklus futása során, ami nem számjegy, hamis
+      return false;
+  }
+  return true;
+}
+
 uint8_t inputElement() // egyetlen kétjegyű szám bekérése, visszatér egy leendő tömbelemmel
 {
   uint8_t accepted = 0;
-  char first[2];
-  first[1] = '\0';
 
   char *element = (char *)malloc(sizeof(char) * 3);
   char remoteValue[2]; // távirányító dekódolt értékei lehetnek: "1" ... "9", "OK", "ND" (OK: elfogad, ND: not defined)
   do           // amíg a helyes számjegyek el nem érik a kettőt
   {
     printf("%d. számjegy: ", accepted + 1); // kijelzőre
-    scanf("%s", remoteValue);
-    first[0] = remoteValue[0];
-    if (isdigit(first[0]))
+    scanf("%s", remoteValue); //remote controllerrel bekérünk
+    if (isNumeric(remoteValue))
     {
       accepted += 1;
       strcat(element, first);
       printf("%s\n", element); // kijelzőre
     }
-    else if (strcmp(remoteValue, "OK") == 0) // ha OK-gombot nyom
+    else if (strcmp(remoteValue, "OK") == 0) // ha nem szám, de OK-gombot nyom
     {
-      if (accepted == 0) // ha nincs helyes számjegy, és OK gombot nyom -> nem adott meg számot -> folytassa a bekérést
+      if (accepted == 0) // ha nincs helyes számjegy, és leokézza -> nem adott meg számot -> folytassa a bekérést
       {
         puts("Nem adott meg számot");
-        continue; // folytassa a ciklust
+        lcd.print("No ")
+        continue;
       }
-      else if (accepted == 1) // ha 1 helyes számjegy már van, és OK gombot nyom -> egyjegyű
+      else if (accepted == 1) // ha 1 helyes számjegy már van, és OK gombot nyom -> egyjegyű -> mentheti
         break;
     }
-    else
+    else //ha "ND"
     {
-      puts("Ez nem számjegy!");
+      lcd.print("Not a number!");
+      delay(500);
+      lcd.clear();
       continue;
     }
-  } while (accepted < 2);
+  } while (accepted < 2); //eleve 2-ig kér be számot, nem enged többet felvinni, így nincs értelme vizsgálni, hogy 2-nél hosszabb lesz-e
   uint8_t arrNumber = atoi(element);
   free(element);
   return arrNumber; // egésszé alakított tömbelem
 }
 
-/* INFRARED REMOTE CONTROLLER 
+/* INFRARED REMOTE CONTROLLER - ez még kell, hogy a konkrét 
 char* receiverHandling(){ //returns string "0"..."9", "ND", "OK"
     //TODO: determine, which HEX-code belongs to which value
     if (IrReceiver.decode())
