@@ -1,0 +1,146 @@
+#include <LiquidCrystal.h> //LED DISPLAY
+#include <Adafruit_NeoPixel.h> //LED NeoPixel
+#include <IRremote.h> //Remote Control + Receiver
+
+#define ARRAY_SIZE 5
+unsigned char* tomb;
+
+#define RECEIVER_PIN 9
+
+#define en 2
+#define rs 3
+#define d4 7
+#define d5 6
+#define d6 5
+#define d7 4
+
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+
+void setup()
+{
+  Serial.begin(9600);
+  
+  IrReceiver.begin(RECEIVER_PIN, ENABLE_LED_FEEDBACK); //start the receiver
+    
+  tomb = (unsigned char *)malloc(sizeof(unsigned char) * ARRAY_SIZE);
+  
+  lcd.print("Tombfeltoltes");
+  delay(1000);
+  lcd.clear();
+  
+  
+
+}
+
+void loop()
+{ 
+ receiverHandling2();
+
+}
+
+void receiverHandling2(){ //returns string "0"..."9", "ND", "OK"
+  if (IrReceiver.decode()){
+    switch (IrReceiver.decodedIRData.decodedRawData)
+    {
+      case 0xF30CBF00: lcd.print("0"); arrayFillWithRC("0"); break; // Button 0
+      case 0xEF10BF00: lcd.print("1"); arrayFillWithRC("1"); break;// Button 1
+      case 0xEE11BF00: lcd.print("2"); arrayFillWithRC("2"); break;// Button 2
+      case 0xED12BF00: lcd.print("3"); arrayFillWithRC("3"); break;// Button 3
+      case 0xEB14BF00: lcd.print("4"); arrayFillWithRC("4"); break;// Button 4
+      case 0xEA15BF00: lcd.print("5"); arrayFillWithRC("5"); break;// Button 5
+      case 0xE916BF00: lcd.print("6"); arrayFillWithRC("6"); break;// Button 6
+      case 0xE718BF00: lcd.print("7"); arrayFillWithRC("7"); break;// Button 7
+      case 0xE619BF00: lcd.print("8"); arrayFillWithRC("8"); break;// Button 8
+      case 0xE51ABF00: lcd.print("9"); arrayFillWithRC("9"); break;// Button 9
+      case 0xFD02BF00: lcd.print("OK"); arrayFillWithRC("OK"); lcd.clear();break;
+      default: //lcd.print(IrReceiver.decodedIRData.decodedRawData, HEX); 
+      	break; //Not Defined
+    }
+    lcd.print(" ");
+    IrReceiver.resume();
+  }
+}
+char i = 0;
+char j = 0;
+char* elso;
+char* ketto;
+char* temp;
+char* temptomb = (char *)malloc(sizeof(char) * 3);
+
+void arrayFillWithRC(char* input) //elmenti egy ciklusban a rendezendő tömb elemeit
+{
+  //2 elemű string 
+  if(j < 5)
+  {
+    
+    if (i == 0)
+    {
+
+      elso = input;
+      temptomb[0] = input[0];
+      i++;
+      
+    }
+    else if(i==1)
+    {
+      ketto = input;
+      temptomb[1] = ketto[0];
+      if(temptomb[0] == 0)
+      {
+        tomb[j] = temptomb[1];
+      }
+      temptomb[2] = '\0';
+      tomb[j] = atoi(temptomb);
+
+      i++;
+      Serial.print(j);
+      Serial.print(". elem elmentve, az elem: ");
+      Serial.println(tomb[j]);
+      j++;
+    }
+    else
+    {
+      i = 0;
+    }
+  }
+  else
+  {
+    lcd.print("Tomb feltoltve!");
+  }
+  
+
+  
+  
+  
+  
+}
+
+
+
+2907897600 = 0
+0
+3910598400 = 1
+0
+0
+3860463360 = 2
+0
+4061003520 = 3
+0
+4077715200 = 4
+0
+0
+3877175040 = 5
+0
+2707357440 = 6
+0
+4144561920 = 7
+0
+3810328320 = 8
+0
+2774204160 = 9
+0
+3208707840 = OK
+0
+0
+
