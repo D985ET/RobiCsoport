@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--Created by yFiles for HTML 2.5-alpha4-->
+<!--Created by yFiles for HTML 2.5-EAP-->
 <graphml xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml.html/2.0/ygraphml.xsd " xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:demostyle2="http://www.yworks.com/yFilesHTML/demos/FlatDemoStyle/2.0" xmlns:demostyle="http://www.yworks.com/yFilesHTML/demos/FlatDemoStyle/1.0" xmlns:icon-style="http://www.yworks.com/yed-live/icon-style/1.0" xmlns:bpmn="http://www.yworks.com/xml/yfiles-bpmn/2.0" xmlns:demotablestyle="http://www.yworks.com/yFilesHTML/demos/FlatDemoTableStyle/1.0" xmlns:uml="http://www.yworks.com/yFilesHTML/demos/UMLDemoStyle/1.0" xmlns:GraphvizNodeStyle="http://www.yworks.com/yFilesHTML/graphviz-node-style/1.0" xmlns:VuejsNodeStyle="http://www.yworks.com/demos/yfiles-vuejs-node-style/1.0" xmlns:explorer-style="http://www.yworks.com/data-explorer/1.0" xmlns:y="http://www.yworks.com/xml/yfiles-common/3.0" xmlns:x="http://www.yworks.com/xml/yfiles-common/markup/3.0" xmlns:yjs="http://www.yworks.com/xml/yfiles-for-html/2.0/xaml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<key id="d0" for="node" attr.type="int" attr.name="zOrder" y:attr.uri="http://www.yworks.com/xml/yfiles-z-order/1.0/zOrder"/>
 	<key id="d1" for="node" attr.type="boolean" attr.name="Expanded" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/folding/Expanded">
@@ -42,8 +42,8 @@
 			</y:CompositeLabelModelParameter>
 			<yjs:SolidColorFill x:Key="4" color="#FF608B63"/>
 			<yjs:Stroke x:Key="5" fill="#FF608B63"/>
-			<yjs:Font x:Key="6" fontSize="25" fontFamily="'Roboto'"/>
-			<y:Json x:Key="7">{"tooltip":"Current default style for node/edge labels"}</y:Json>
+			<y:Json x:Key="6">{"tooltip":"Current default style for node/edge labels"}</y:Json>
+			<yjs:Stroke x:Key="7" fill="#FF608B63" thickness="10"/>
 			<y:ExteriorLabelModel x:Key="8" Insets="5"/>
 			<y:CompositeLabelModel x:Key="9">
 				<y:CompositeLabelModel.LabelModels>
@@ -52,41 +52,21 @@
 					<y:FreeNodeLabelModel/>
 				</y:CompositeLabelModel.LabelModels>
 			</y:CompositeLabelModel>
-			<yjs:Stroke x:Key="10" fill="#FF608B63">
-				<yjs:Stroke.thickness>
-					<sys:Double xmlns:sys="http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0">10</sys:Double>
-				</yjs:Stroke.thickness>
-			</yjs:Stroke>
-			<yjs:SolidColorFill x:Key="11" color="#FFBDBABA"/>
-			<yjs:Stroke x:Key="12" fill="#FFBDBABA"/>
-			<yjs:Font x:Key="13" fontSize="12" fontFamily="'Arial'"/>
-			<y:CompositeLabelModelParameter x:Key="14" Model="{y:GraphMLReference 9}">
+			<y:CompositeLabelModelParameter x:Key="10" Model="{y:GraphMLReference 9}">
 				<y:CompositeLabelModelParameter.Parameter>
 					<y:ExteriorLabelModelParameter Position="South" Model="{y:GraphMLReference 8}"/>
 				</y:CompositeLabelModelParameter.Parameter>
 			</y:CompositeLabelModelParameter>
-			<yjs:Stroke x:Key="15" fill="#FF000000"/>
-			<yjs:PolylineEdgeStyle x:Key="16" stroke="{y:GraphMLReference 15}">
-				<yjs:PolylineEdgeStyle.targetArrow>
-					<yjs:Arrow stroke="{y:GraphMLReference 15}" fill="#FF000000"/>
-				</yjs:PolylineEdgeStyle.targetArrow>
-			</yjs:PolylineEdgeStyle>
-			<y:SmartEdgeLabelModelParameter x:Key="17" Model="{y:GraphMLReference 19}" Distance="5"/>
-			<yjs:DefaultLabelStyle x:Key="18" verticalTextAlignment="BOTTOM" horizontalTextAlignment="CENTER" font="{y:GraphMLReference 13}" textFill="BLACK"/>
-			<y:SmartEdgeLabelModel x:Key="19"/>
-			<yjs:PolylineEdgeStyle x:Key="20" smoothingLength="10">
-				<yjs:PolylineEdgeStyle.stroke>
-					<yjs:Stroke fill="#FF000000" thickness="0.75"/>
-				</yjs:PolylineEdgeStyle.stroke>
-				<yjs:PolylineEdgeStyle.targetArrow>
-					<yjs:Arrow stroke="#FF000000" fill="#FF000000"/>
-				</yjs:PolylineEdgeStyle.targetArrow>
-			</yjs:PolylineEdgeStyle>
+			<yjs:SolidColorFill x:Key="11" color="#FFBDBABA"/>
+			<yjs:Stroke x:Key="12" fill="#FFBDBABA"/>
+			<yjs:Font x:Key="13" fontSize="12" fontFamily="'Arial'"/>
+			<y:SmartEdgeLabelModelParameter x:Key="14" Model="{y:GraphMLReference 15}" Distance="5"/>
+			<y:SmartEdgeLabelModel x:Key="15"/>
 		</y:SharedData>
 	</data>
 	<graph id="G" edgedefault="directed">
 		<data key="d6">
-			<y:Json>{"version":"2.0.0","theme":{"name":"light","version":"1.0.0"}}</y:Json>
+			<y:Json>{"version":"2.0.0","theme":{"name":"dark","version":"1.0.0"}}</y:Json>
 		</data>
 		<node id="n0">
 			<data key="d0">1</data>
@@ -102,19 +82,20 @@
 			<data key="d0">2</data>
 			<data key="d4">
 				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 3}" Tag="{y:GraphMLReference 7}">
+					<y:Label LayoutParameter="{y:GraphMLReference 3}" Tag="{y:GraphMLReference 6}">
 						<y:Label.Text>1Kiválaszt</y:Label.Text>
 						<y:Label.Style>
-							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 4}" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 5}" font="{y:GraphMLReference 6}" textFill="WHITE" textSize="25"/>
+							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 4}" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 5}" textFill="WHITE" textSize="25">
+								<yjs:DefaultLabelStyle.font>
+									<yjs:Font fontSize="25" fontFamily="'Roboto'"/>
+								</yjs:DefaultLabelStyle.font>
+							</yjs:DefaultLabelStyle>
 						</y:Label.Style>
 					</y:Label>
 					<y:Label>
-						<y:Label.Text><![CDATA[A felhasználó kiválasztja 
-a tömb feltöltésének módját 
-(szenzoros mérés vagy távirányító)
-A kód a távirányítót figyeli
-1: szenzoros
-2: távirányítós]]></y:Label.Text>
+						<y:Label.Text><![CDATA[A felhasználó a tömböt
+egy távirányító segítségével 
+tölti fel.]]></y:Label.Text>
 						<y:Label.LayoutParameter>
 							<y:RatioAnchoredLabelModelParameter LayoutOffset="-62.375,79.81299999999999"/>
 						</y:Label.LayoutParameter>
@@ -131,7 +112,7 @@ A kód a távirányítót figyeli
 				<y:RectD X="-733.625" Y="-418.75" Width="146" Height="68"/>
 			</data>
 			<data key="d7">
-				<yjs:ShapeNodeStyle stroke="{y:GraphMLReference 10}" fill="{y:GraphMLReference 2}" shape="ELLIPSE"/>
+				<yjs:ShapeNodeStyle stroke="{y:GraphMLReference 7}" fill="{y:GraphMLReference 2}" shape="ELLIPSE"/>
 			</data>
 			<port name="p0">
 				<data key="d16">
@@ -153,62 +134,25 @@ A kód a távirányítót figyeli
 			</port>
 		</node>
 		<node id="n2">
-			<data key="d0">3</data>
-			<data key="d4">
-				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 3}" Tag="{y:GraphMLReference 7}">
-						<y:Label.Text>SzFeltölt</y:Label.Text>
-						<y:Label.Style>
-							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 4}" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 5}" font="{y:GraphMLReference 6}" textFill="WHITE" textSize="25"/>
-						</y:Label.Style>
-					</y:Label>
-					<y:Label>
-						<y:Label.Text><![CDATA[A 10 db egész számot a szenzor által 
-mért értékek adják.
-A vezérlő a szenzort figyeli]]></y:Label.Text>
-						<y:Label.LayoutParameter>
-							<y:CompositeLabelModelParameter Model="{y:GraphMLReference 9}">
-								<y:CompositeLabelModelParameter.Parameter>
-									<y:ExteriorLabelModelParameter Position="North" Model="{y:GraphMLReference 8}"/>
-								</y:CompositeLabelModelParameter.Parameter>
-							</y:CompositeLabelModelParameter>
-						</y:Label.LayoutParameter>
-						<y:Label.Style>
-							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 11}" verticalTextAlignment="BOTTOM" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 12}" font="{y:GraphMLReference 13}" textFill="BLACK"/>
-						</y:Label.Style>
-					</y:Label>
-				</x:List>
-			</data>
-			<data key="d5">
-				<y:RectD X="-482.125" Y="-501.625" Width="146" Height="68"/>
-			</data>
-			<data key="d7">
-				<yjs:ShapeNodeStyle stroke="{y:GraphMLReference 10}" fill="{y:GraphMLReference 2}" shape="ELLIPSE"/>
-			</data>
-			<port name="p0">
-				<data key="d16">
-					<y:FreeNodePortLocationModelParameter Ratio="0.006756756756756743,0.5"/>
-				</data>
-			</port>
-			<port name="p1"/>
-			<port name="p2"/>
-		</node>
-		<node id="n3">
 			<data key="d0">4</data>
 			<data key="d4">
 				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 3}" Tag="{y:GraphMLReference 7}">
+					<y:Label LayoutParameter="{y:GraphMLReference 3}" Tag="{y:GraphMLReference 6}">
 						<y:Label.Text>TFeltölt</y:Label.Text>
 						<y:Label.Style>
-							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 4}" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 5}" font="{y:GraphMLReference 6}" textFill="WHITE" textSize="25"/>
+							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 4}" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 5}" textFill="WHITE" textSize="25">
+								<yjs:DefaultLabelStyle.font>
+									<yjs:Font fontSize="25" fontFamily="'Roboto'"/>
+								</yjs:DefaultLabelStyle.font>
+							</yjs:DefaultLabelStyle>
 						</y:Label.Style>
 					</y:Label>
 					<y:Label>
-						<y:Label.Text><![CDATA[A felhasználótól 10 db egész számot kérünk be
-[-128; 127] tartományban.
-A vezérlő a távirányítót figyeli]]></y:Label.Text>
+						<y:Label.Text><![CDATA[A felhasználótól 5 db egész számot kérünk be
+[1-99] tartományban.
+A vezérlő a távirányítót figyeli.]]></y:Label.Text>
 						<y:Label.LayoutParameter>
-							<y:RatioAnchoredLabelModelParameter LayoutOffset="-36.875,76"/>
+							<y:RatioAnchoredLabelModelParameter LayoutOffset="-36.875,-60"/>
 						</y:Label.LayoutParameter>
 						<y:Label.Style>
 							<bpmn:AnnotationLabelStyle background="#FFBDBABA" outline="WHITE"/>
@@ -220,10 +164,10 @@ A vezérlő a távirányítót figyeli]]></y:Label.Text>
 				</x:List>
 			</data>
 			<data key="d5">
-				<y:RectD X="-489.75" Y="-359.125" Width="146" Height="68"/>
+				<y:RectD X="-469.625" Y="-418.75" Width="146" Height="68"/>
 			</data>
 			<data key="d7">
-				<yjs:ShapeNodeStyle stroke="{y:GraphMLReference 10}" fill="{y:GraphMLReference 2}" shape="ELLIPSE"/>
+				<yjs:ShapeNodeStyle stroke="{y:GraphMLReference 7}" fill="{y:GraphMLReference 2}" shape="ELLIPSE"/>
 			</data>
 			<port name="p0">
 				<data key="d16">
@@ -233,17 +177,21 @@ A vezérlő a távirányítót figyeli]]></y:Label.Text>
 			<port name="p1"/>
 			<port name="p2"/>
 		</node>
-		<node id="n4">
+		<node id="n3">
 			<data key="d0">5</data>
 			<data key="d4">
 				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 3}" Tag="{y:GraphMLReference 7}">
+					<y:Label LayoutParameter="{y:GraphMLReference 3}" Tag="{y:GraphMLReference 6}">
 						<y:Label.Text>2Kiválaszt</y:Label.Text>
 						<y:Label.Style>
-							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 4}" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 5}" font="{y:GraphMLReference 6}" textFill="WHITE" textSize="25"/>
+							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 4}" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 5}" textFill="WHITE" textSize="25">
+								<yjs:DefaultLabelStyle.font>
+									<yjs:Font fontSize="25" fontFamily="'Roboto'"/>
+								</yjs:DefaultLabelStyle.font>
+							</yjs:DefaultLabelStyle>
 						</y:Label.Style>
 					</y:Label>
-					<y:Label LayoutParameter="{y:GraphMLReference 14}">
+					<y:Label LayoutParameter="{y:GraphMLReference 10}">
 						<y:Label.Text><![CDATA[A felhasználó kiválaszt egy rendezőalgoritmust.
 A vezérlő a gesztusérzékelőt figyeli]]></y:Label.Text>
 						<y:Label.Style>
@@ -256,7 +204,7 @@ A vezérlő a gesztusérzékelőt figyeli]]></y:Label.Text>
 				<y:RectD X="-205.625" Y="-418.75" Width="146" Height="68"/>
 			</data>
 			<data key="d7">
-				<yjs:ShapeNodeStyle stroke="{y:GraphMLReference 10}" fill="{y:GraphMLReference 2}" shape="ELLIPSE"/>
+				<yjs:ShapeNodeStyle stroke="{y:GraphMLReference 7}" fill="{y:GraphMLReference 2}" shape="ELLIPSE"/>
 			</data>
 			<port name="p0">
 				<data key="d16">
@@ -277,17 +225,21 @@ A vezérlő a gesztusérzékelőt figyeli]]></y:Label.Text>
 				</data>
 			</port>
 		</node>
-		<node id="n5">
+		<node id="n4">
 			<data key="d0">6</data>
 			<data key="d4">
 				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 3}" Tag="{y:GraphMLReference 7}">
+					<y:Label LayoutParameter="{y:GraphMLReference 3}" Tag="{y:GraphMLReference 6}">
 						<y:Label.Text>Rendez</y:Label.Text>
 						<y:Label.Style>
-							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 4}" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 5}" font="{y:GraphMLReference 6}" textFill="WHITE" textSize="25"/>
+							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 4}" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 5}" textFill="WHITE" textSize="25">
+								<yjs:DefaultLabelStyle.font>
+									<yjs:Font fontSize="25" fontFamily="'Roboto'"/>
+								</yjs:DefaultLabelStyle.font>
+							</yjs:DefaultLabelStyle>
 						</y:Label.Style>
 					</y:Label>
-					<y:Label LayoutParameter="{y:GraphMLReference 14}">
+					<y:Label LayoutParameter="{y:GraphMLReference 10}">
 						<y:Label.Text><![CDATA[A kód végrehajtja a rendezőalgoritmust (késleltetésekkel)
 A vezérlő nem figyel szenzorra,
 LCD-kijelzőn mutatja a tömböt,
@@ -302,7 +254,7 @@ a LED-szalagon az aktuális elemeket]]></y:Label.Text>
 				<y:RectD X="101.625" Y="-418.75" Width="146" Height="68"/>
 			</data>
 			<data key="d7">
-				<yjs:ShapeNodeStyle stroke="{y:GraphMLReference 10}" fill="{y:GraphMLReference 2}" shape="ELLIPSE"/>
+				<yjs:ShapeNodeStyle stroke="{y:GraphMLReference 7}" fill="{y:GraphMLReference 2}" shape="ELLIPSE"/>
 			</data>
 			<port name="p0">
 				<data key="d16">
@@ -311,22 +263,24 @@ a LED-szalagon az aktuális elemeket]]></y:Label.Text>
 			</port>
 			<port name="p1"/>
 		</node>
-		<node id="n6">
+		<node id="n5">
 			<data key="d0">7</data>
 			<data key="d4">
 				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 3}" Tag="{y:GraphMLReference 7}">
+					<y:Label LayoutParameter="{y:GraphMLReference 3}" Tag="{y:GraphMLReference 6}">
 						<y:Label.Text>Eredmény</y:Label.Text>
 						<y:Label.Style>
-							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 4}" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 5}" font="{y:GraphMLReference 6}" textFill="WHITE" textSize="25"/>
+							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 4}" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 5}" textFill="WHITE" textSize="25">
+								<yjs:DefaultLabelStyle.font>
+									<yjs:Font fontSize="25" fontFamily="'Roboto'"/>
+								</yjs:DefaultLabelStyle.font>
+							</yjs:DefaultLabelStyle>
 						</y:Label.Style>
 					</y:Label>
-					<y:Label LayoutParameter="{y:GraphMLReference 14}">
+					<y:Label LayoutParameter="{y:GraphMLReference 10}">
 						<y:Label.Text><![CDATA[LCD kijelzőn mutatja a rendezett tömböt.
 LED-szalag lekapcsol
-Felhasználó folytathatja 
-egy másik rendezőalgoritmus kipróbálásával
-vagy újrakezdheti az elejétől.]]></y:Label.Text>
+A program terminál.]]></y:Label.Text>
 						<y:Label.Style>
 							<yjs:DefaultLabelStyle backgroundFill="{y:GraphMLReference 11}" verticalTextAlignment="BOTTOM" horizontalTextAlignment="CENTER" backgroundStroke="{y:GraphMLReference 12}" font="{y:GraphMLReference 13}" textFill="BLACK"/>
 						</y:Label.Style>
@@ -337,7 +291,7 @@ vagy újrakezdheti az elejétől.]]></y:Label.Text>
 				<y:RectD X="457.625" Y="-418.75" Width="146" Height="68"/>
 			</data>
 			<data key="d7">
-				<yjs:ShapeNodeStyle stroke="{y:GraphMLReference 10}" fill="{y:GraphMLReference 2}" shape="ELLIPSE"/>
+				<yjs:ShapeNodeStyle stroke="{y:GraphMLReference 7}" fill="{y:GraphMLReference 2}" shape="ELLIPSE"/>
 			</data>
 			<port name="p0">
 				<data key="d16">
@@ -349,152 +303,144 @@ vagy újrakezdheti az elejétől.]]></y:Label.Text>
 		</node>
 		<edge id="e0" source="n0" target="n1" sourceport="p0" targetport="p0">
 			<data key="d13">
-				<y:GraphMLReference ResourceKey="16"/>
+				<yjs:PolylineEdgeStyle stroke="#FFFFFFFF">
+					<yjs:PolylineEdgeStyle.targetArrow>
+						<yjs:Arrow stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.targetArrow>
+					<yjs:PolylineEdgeStyle.sourceArrow>
+						<yjs:Arrow type="NONE" stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.sourceArrow>
+				</yjs:PolylineEdgeStyle>
 			</data>
 		</edge>
-		<edge id="e1" source="n1" target="n2" sourceport="p1" targetport="p0">
+		<edge id="e1" source="n1" target="n2" sourceport="p2" targetport="p0">
 			<data key="d11">
 				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 17}" Style="{y:GraphMLReference 18}">
-						<y:Label.Text>szenzoros</y:Label.Text>
-					</y:Label>
-				</x:List>
-			</data>
-			<data key="d13">
-				<y:GraphMLReference ResourceKey="16"/>
-			</data>
-		</edge>
-		<edge id="e2" source="n1" target="n3" sourceport="p2" targetport="p0">
-			<data key="d11">
-				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 17}" Style="{y:GraphMLReference 18}">
+					<y:Label LayoutParameter="{y:GraphMLReference 14}">
 						<y:Label.Text>távirányítós</y:Label.Text>
+						<y:Label.Style>
+							<yjs:DefaultLabelStyle verticalTextAlignment="BOTTOM" horizontalTextAlignment="CENTER" font="{y:GraphMLReference 13}" textFill="WHITE"/>
+						</y:Label.Style>
 					</y:Label>
 				</x:List>
 			</data>
 			<data key="d13">
-				<y:GraphMLReference ResourceKey="16"/>
+				<yjs:PolylineEdgeStyle stroke="#FFFFFFFF">
+					<yjs:PolylineEdgeStyle.targetArrow>
+						<yjs:Arrow stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.targetArrow>
+					<yjs:PolylineEdgeStyle.sourceArrow>
+						<yjs:Arrow type="NONE" stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.sourceArrow>
+				</yjs:PolylineEdgeStyle>
 			</data>
 		</edge>
-		<edge id="e3" source="n3" target="n4" sourceport="p1" targetport="p0">
+		<edge id="e2" source="n2" target="n3" sourceport="p1" targetport="p0">
 			<data key="d11">
 				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 17}" Style="{y:GraphMLReference 18}">
+					<y:Label LayoutParameter="{y:GraphMLReference 14}">
 						<y:Label.Text>sikeres</y:Label.Text>
+						<y:Label.Style>
+							<yjs:DefaultLabelStyle verticalTextAlignment="BOTTOM" horizontalTextAlignment="CENTER" font="{y:GraphMLReference 13}" textFill="WHITE"/>
+						</y:Label.Style>
 					</y:Label>
 				</x:List>
 			</data>
 			<data key="d13">
-				<y:GraphMLReference ResourceKey="16"/>
+				<yjs:PolylineEdgeStyle stroke="#FFFFFFFF">
+					<yjs:PolylineEdgeStyle.targetArrow>
+						<yjs:Arrow stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.targetArrow>
+					<yjs:PolylineEdgeStyle.sourceArrow>
+						<yjs:Arrow type="NONE" stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.sourceArrow>
+				</yjs:PolylineEdgeStyle>
 			</data>
 		</edge>
-		<edge id="e4" source="n2" target="n4" sourceport="p1" targetport="p1">
+		<edge id="e3" source="n2" target="n1" sourceport="p2" targetport="p3">
 			<data key="d11">
 				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 17}" Style="{y:GraphMLReference 18}">
-						<y:Label.Text>sikeres</y:Label.Text>
-					</y:Label>
-				</x:List>
-			</data>
-			<data key="d13">
-				<y:GraphMLReference ResourceKey="16"/>
-			</data>
-		</edge>
-		<edge id="e5" source="n3" target="n1" sourceport="p2" targetport="p3">
-			<data key="d11">
-				<x:List>
-					<y:Label Style="{y:GraphMLReference 18}">
+					<y:Label>
 						<y:Label.Text>sikertelen</y:Label.Text>
 						<y:Label.LayoutParameter>
-							<y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 19}" SegmentIndex="1" SegmentRatio="0.7679947469240285" Distance="-0.001"/>
+							<y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 15}" SegmentIndex="1" SegmentRatio="0.7679947469240285" Distance="-0.001"/>
 						</y:Label.LayoutParameter>
+						<y:Label.Style>
+							<yjs:DefaultLabelStyle verticalTextAlignment="BOTTOM" horizontalTextAlignment="CENTER" font="{y:GraphMLReference 13}" textFill="WHITE"/>
+						</y:Label.Style>
 					</y:Label>
 				</x:List>
 			</data>
 			<data key="d12">
 				<x:List>
 					<y:Bend Location="-485.5,-309.375"/>
+					<y:Bend Location="-543,-309.375"/>
 					<y:Bend Location="-553.9375,-309.375"/>
+					<y:Bend Location="-576.375,-325.5"/>
 				</x:List>
 			</data>
 			<data key="d13">
-				<y:GraphMLReference ResourceKey="20"/>
-			</data>
-		</edge>
-		<edge id="e6" source="n2" target="n1" sourceport="p2" targetport="p4">
-			<data key="d11">
-				<x:List>
-					<y:Label Style="{y:GraphMLReference 18}">
-						<y:Label.Text>sikertelen</y:Label.Text>
-						<y:Label.LayoutParameter>
-							<y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 19}" Location="FromTarget" SegmentRatio="0.49999999999999967" Distance="-0.0010000000001468834"/>
-						</y:Label.LayoutParameter>
-					</y:Label>
-				</x:List>
-			</data>
-			<data key="d12">
-				<x:List>
-					<y:Bend Location="-485.125,-493"/>
-				</x:List>
-			</data>
-			<data key="d13">
-				<yjs:PolylineEdgeStyle stroke="#FF000000">
+				<yjs:PolylineEdgeStyle smoothingLength="10">
+					<yjs:PolylineEdgeStyle.stroke>
+						<yjs:Stroke fill="WHITE" thickness="0.75"/>
+					</yjs:PolylineEdgeStyle.stroke>
 					<yjs:PolylineEdgeStyle.targetArrow>
-						<yjs:Arrow type="TRIANGLE" scale="0.75" stroke="#FF000000" fill="BLACK" cropLength="1"/>
+						<yjs:Arrow stroke="#FFFFFFFF" fill="WHITE"/>
 					</yjs:PolylineEdgeStyle.targetArrow>
 					<yjs:PolylineEdgeStyle.sourceArrow>
-						<yjs:Arrow type="NONE" stroke="#FF000000" fill="BLACK"/>
+						<yjs:Arrow type="NONE" stroke="#FFFFFFFF" fill="WHITE"/>
 					</yjs:PolylineEdgeStyle.sourceArrow>
 				</yjs:PolylineEdgeStyle>
 			</data>
 		</edge>
-		<edge id="e7" source="n4" target="n5" sourceport="p2" targetport="p0">
+		<edge id="e4" source="n3" target="n4" sourceport="p2" targetport="p0">
 			<data key="d11">
 				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 17}" Style="{y:GraphMLReference 18}">
+					<y:Label LayoutParameter="{y:GraphMLReference 14}">
 						<y:Label.Text>sikeres</y:Label.Text>
+						<y:Label.Style>
+							<yjs:DefaultLabelStyle verticalTextAlignment="BOTTOM" horizontalTextAlignment="CENTER" font="{y:GraphMLReference 13}" textFill="WHITE"/>
+						</y:Label.Style>
 					</y:Label>
 				</x:List>
 			</data>
 			<data key="d13">
 				<yjs:PolylineEdgeStyle>
 					<yjs:PolylineEdgeStyle.stroke>
-						<yjs:Stroke fill="#FF000000" thickness="0.75"/>
+						<yjs:Stroke fill="WHITE" thickness="0.75"/>
 					</yjs:PolylineEdgeStyle.stroke>
 					<yjs:PolylineEdgeStyle.targetArrow>
-						<yjs:Arrow stroke="#FF000000" fill="#FF000000" cropLength="1"/>
+						<yjs:Arrow stroke="#FFFFFFFF" fill="WHITE" cropLength="1"/>
 					</yjs:PolylineEdgeStyle.targetArrow>
+					<yjs:PolylineEdgeStyle.sourceArrow>
+						<yjs:Arrow type="NONE" stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.sourceArrow>
 				</yjs:PolylineEdgeStyle>
 			</data>
 		</edge>
-		<edge id="e8" source="n5" target="n6" sourceport="p1" targetport="p0">
+		<edge id="e5" source="n4" target="n5" sourceport="p1" targetport="p0">
 			<data key="d13">
-				<y:GraphMLReference ResourceKey="20"/>
+				<yjs:PolylineEdgeStyle smoothingLength="10">
+					<yjs:PolylineEdgeStyle.stroke>
+						<yjs:Stroke fill="WHITE" thickness="0.75"/>
+					</yjs:PolylineEdgeStyle.stroke>
+					<yjs:PolylineEdgeStyle.targetArrow>
+						<yjs:Arrow stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.targetArrow>
+					<yjs:PolylineEdgeStyle.sourceArrow>
+						<yjs:Arrow type="NONE" stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.sourceArrow>
+				</yjs:PolylineEdgeStyle>
 			</data>
 		</edge>
-		<edge id="e9" source="n6" target="n4" sourceport="p1" targetport="p3">
+		<edge id="e6" source="n5" target="n1" sourceport="p2" targetport="p5">
 			<data key="d11">
 				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 17}" Style="{y:GraphMLReference 18}">
-						<y:Label.Text>folytat</y:Label.Text>
-					</y:Label>
-				</x:List>
-			</data>
-			<data key="d12">
-				<x:List>
-					<y:Bend Location="530.625,-467.625"/>
-					<y:Bend Location="-132.625,-467.625"/>
-				</x:List>
-			</data>
-			<data key="d13">
-				<y:GraphMLReference ResourceKey="20"/>
-			</data>
-		</edge>
-		<edge id="e10" source="n6" target="n1" sourceport="p2" targetport="p5">
-			<data key="d11">
-				<x:List>
-					<y:Label LayoutParameter="{y:GraphMLReference 17}" Style="{y:GraphMLReference 18}">
-						<y:Label.Text>újrakezd</y:Label.Text>
+					<y:Label LayoutParameter="{y:GraphMLReference 14}">
+						<y:Label.Text>újraindít</y:Label.Text>
+						<y:Label.Style>
+							<yjs:DefaultLabelStyle verticalTextAlignment="BOTTOM" horizontalTextAlignment="CENTER" font="{y:GraphMLReference 13}" textFill="WHITE"/>
+						</y:Label.Style>
 					</y:Label>
 				</x:List>
 			</data>
@@ -506,22 +452,45 @@ vagy újrakezdheti az elejétől.]]></y:Label.Text>
 				</x:List>
 			</data>
 			<data key="d13">
-				<y:GraphMLReference ResourceKey="20"/>
+				<yjs:PolylineEdgeStyle smoothingLength="10">
+					<yjs:PolylineEdgeStyle.stroke>
+						<yjs:Stroke fill="WHITE" thickness="0.75"/>
+					</yjs:PolylineEdgeStyle.stroke>
+					<yjs:PolylineEdgeStyle.targetArrow>
+						<yjs:Arrow stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.targetArrow>
+					<yjs:PolylineEdgeStyle.sourceArrow>
+						<yjs:Arrow type="NONE" stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.sourceArrow>
+				</yjs:PolylineEdgeStyle>
 			</data>
 		</edge>
-		<edge id="e11" source="n4" target="n4" sourceport="p4" targetport="p5">
+		<edge id="e7" source="n3" target="n3" sourceport="p4" targetport="p5">
 			<data key="d11">
 				<x:List>
-					<y:Label Style="{y:GraphMLReference 18}">
+					<y:Label>
 						<y:Label.Text>sikertelen</y:Label.Text>
 						<y:Label.LayoutParameter>
-							<y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 19}" SegmentIndex="1" Distance="0.001"/>
+							<y:SmartEdgeLabelModelParameter Model="{y:GraphMLReference 15}" SegmentIndex="1" Distance="0.001"/>
 						</y:Label.LayoutParameter>
+						<y:Label.Style>
+							<yjs:DefaultLabelStyle verticalTextAlignment="BOTTOM" horizontalTextAlignment="CENTER" font="{y:GraphMLReference 13}" textFill="WHITE"/>
+						</y:Label.Style>
 					</y:Label>
 				</x:List>
 			</data>
 			<data key="d13">
-				<y:GraphMLReference ResourceKey="20"/>
+				<yjs:PolylineEdgeStyle smoothingLength="10">
+					<yjs:PolylineEdgeStyle.stroke>
+						<yjs:Stroke fill="WHITE" thickness="0.75"/>
+					</yjs:PolylineEdgeStyle.stroke>
+					<yjs:PolylineEdgeStyle.targetArrow>
+						<yjs:Arrow stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.targetArrow>
+					<yjs:PolylineEdgeStyle.sourceArrow>
+						<yjs:Arrow type="NONE" stroke="#FFFFFFFF" fill="WHITE"/>
+					</yjs:PolylineEdgeStyle.sourceArrow>
+				</yjs:PolylineEdgeStyle>
 			</data>
 		</edge>
 	</graph>
