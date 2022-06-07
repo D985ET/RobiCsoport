@@ -1,16 +1,23 @@
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
 #include <LiquidCrystal.h>     //LED DISPLAY
+#include <SparkFun_APDS9960.h> // Gesture Sensor
 #include <Adafruit_NeoPixel.h> //LED NeoPixel
 #include <IRremote.h> //Remote Control + Receiver
+#include <string.h>
 
 LiquidCrystal_I2C lcd(0x27,20,4); 
 const int ARRAY_SIZE = 5;
-int tomb[ARRAY_SIZE];
+int tomb[ARRAY_SIZE] = {0,0,0,0,0};
 int allapot = 1;
+int rendezes = 0;
 unsigned char* tombTemp;
-#define NEOPIXEL_PIN 4
 
+SparkFun_APDS9960 apds = SparkFun_APDS9960();
+int isr_flag = 0;
+
+#define NEOPIXEL_PIN 4
+#define APDS9960_INT    5
 #define GREEN 0, 150, 0
 #define RED 150, 0 , 0
 #define BLUE 131, 238, 255
@@ -25,7 +32,10 @@ Adafruit_NeoPixel pixels(ARRAY_SIZE, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   Serial.begin(9600);
-  
+  pinMode(APDS9960_INT, INPUT);
+  attachInterrupt(0, interruptRoutine, FALLING);
+  apds.init(); 
+  apds.enableGestureSensor(true);
   IrReceiver.begin(RECEIVER_PIN, ENABLE_LED_FEEDBACK); //start the receiver
   // put your setup code here, to run once:
   tombTemp = (unsigned char *)malloc(sizeof(unsigned char) * ARRAY_SIZE);
@@ -42,17 +52,86 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   if(allapot == 1){
-   receiverHandling2();
+   
+    receiverHandling2();
+
   }
-   if(allapot == 2){
-   minSelectSort();
-   }
-   if(allapot == 3){
+  if(allapot == 2 )
+  {
+    if(isr_flag == 1)
+    {
+      detachInterrupt(0);
+      handleGesture();
+      isr_flag = 0;
+      attachInterrupt(0, interruptRoutine, FALLING);
+      
+    }
+    delay(250);
+  }
+  if (allapot == 3)  
+  {
+    switch(rendezes) {
+      case 1:
+        bubbleSort();
+        break;
+      case 2:
+        cocktailSort();
+        break;
+      case 3:
+        minSelectSort();
+        break;
+      case 4:
+        insertionSort();
+        break;
+      default:
+        break;
+    }
+  }
+  if(allapot == 4){
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Program vége");
-   }
+  }
 }
+
+#pragma region GestureSensor
+void interruptRoutine() {
+  isr_flag = 1;
+}
+
+void handleGesture() {
+    if ( apds.isGestureAvailable() ) {
+      Serial.println("elsoif");
+    switch ( apds.readGesture() ) {
+      case DIR_UP:
+        Serial.println("UP");
+        rendezes = 4;
+        allapot = 3;
+        break;
+      case DIR_DOWN:
+        Serial.println("DOWN");
+        rendezes = 3;
+        allapot = 3;
+        break;
+      case DIR_LEFT:
+        Serial.println("LEFT");
+        rendezes = 2;
+        allapot = 3;
+        break;
+      case DIR_RIGHT:
+        Serial.println("RIGHT");
+        rendezes = 1;
+        allapot = 3;
+        break;
+      default:
+        Serial.println("NONE");
+        
+    }
+   
+  }
+ 
+}
+#pragma endregion GestureSensor
 
 #pragma region Rendezes
 // kék színnel felvillannak a tömb elemei, rendezőalgoritmus kezdete előtt
@@ -134,7 +213,7 @@ void minSelectSort()
   lcd.print("R:");
   printArr(tomb, ARRAY_SIZE);
   delay(3000);  
-  allapot = 3;
+  allapot = 4;
 }
 void bubbleSort()
 {
@@ -178,7 +257,7 @@ void bubbleSort()
   lcd.print("R:");
   printArr(tomb, ARRAY_SIZE);
   delay(3000);  
-  allapot = 3;
+  allapot = 4;
 }    
    
 void cocktailSort()
@@ -235,7 +314,7 @@ void cocktailSort()
     lcd.print("R:");
     printArr(tomb, ARRAY_SIZE);
     delay(3000);  
-    allapot = 3;  
+    allapot = 4;  
   }
 }
 void insertionSort()
@@ -281,7 +360,7 @@ void insertionSort()
     lcd.print("R:");
     printArr(tomb, ARRAY_SIZE); 
     delay(3000);  
-    allapot = 3;
+    allapot = 4;
 }
 #pragma endregion Rendezes
 
@@ -361,11 +440,18 @@ void receiverHandling2(){ //returns string "0"..."9", "ND", "OK"
     lcd.print(" ");
     IrReceiver.resume();
   }
+  else if(tomb[0] != 0)
+  {
+    
+    allapot = 2;  
+  }
 }
 
 void ConvertArray(){
   
 for (int i=0; i < ARRAY_SIZE; i++)
+{
     tomb[i] = tombTemp[i];  
   
+}
 }

@@ -2,7 +2,7 @@
 #include <SparkFun_APDS9960.h>
 
 // pinek, makrók
-#define APDS9960_INTERRUPT 2 // megszakító/interrupt pinnek kell lennie
+#define APDS9960_INTERRUPT 5 // megszakító/interrupt pinnek kell lennie
 
 // globális változók
 SparkFun_APDS9960 gestSensor = SparkFun_APDS9960();
@@ -10,6 +10,7 @@ int isr_flag = 0;
 
 void setup() {
   Serial.begin(9600);
+  delay(1000);
   //interrupt pin-t inputnak állítjuk be
   pinMode(APDS9960_INTERRUPT, INPUT);
   
@@ -39,6 +40,7 @@ void loop() {
     isr_flag = 0;
     attachInterrupt(0, interruptRoutine, FALLING);
   }
+  delay(150);
 }
 
 void interruptRoutine() {
