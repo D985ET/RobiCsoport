@@ -1,6 +1,5 @@
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
-#include <LiquidCrystal.h>     //LED DISPLAY
 #include <SparkFun_APDS9960.h> // Gesture Sensor
 #include <Adafruit_NeoPixel.h> //LED NeoPixel
 #include <IRremote.h> //Remote Control + Receiver

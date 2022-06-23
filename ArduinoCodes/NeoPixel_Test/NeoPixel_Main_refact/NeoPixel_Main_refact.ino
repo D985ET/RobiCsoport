@@ -1,38 +1,45 @@
 #pragma region Könyvtárak beimportálása
-#include <LiquidCrystal_I2C.h>
-#include <SparkFun_APDS9960.h> // Gesture Sensor
-#include <Adafruit_NeoPixel.h> //LED NeoPixel
-#include <IRremote.h> //Remote Control + Receiver
-#include <string.h>
-#include <stdint.h>
+  #include <LiquidCrystal_I2C.h>
+  #include <SparkFun_APDS9960.h> // Gesture Sensor
+  #include <Adafruit_NeoPixel.h> //LED NeoPixel
+  #include <IRremote.h> //Remote Control + Receiver
+  #include <string.h>
+  #include <stdint.h>
 #pragma endregion
 
 #pragma region Állapotok definiálása
-#define TOMBFELTOLTES 1
-#define TOMBFELTOLTVE 2
-#define RENDEZES 3
-#define CLEAR 4
+  #define TOMBFELTOLTES 1
+  #define FELTOLTVE 2
+  #define RENDEZES 3
+  #define CLEAR 4
 #pragma endregion
+
+#pragma region Rendezések definiálása
+  #define BUBOREK 1
+  #define KOKTEL 2
+  #define MINIMUM 3
+  #define BESZURO 4
+#pragma endregion
+
+#pragma region Pinek és színek definiálása
+  #define NEOPIXEL_PIN 4
+  #define APDS9960_INT    5
+  #define RECEIVER_PIN 9
+  #define GREEN 0, 150, 0
+  #define RED 150, 0 , 0
+  #define BLUE 131, 238, 255
+  #define ONESECOND 1000
+#pragma endregion
+
+const uint8_t ARRAY_SIZE = 5;
+uint8_t* tomb;
+uint8_t allapot;
+uint8_t rendezes = 0;
 
 LiquidCrystal_I2C lcd(0x27,20,4);
 Adafruit_NeoPixel pixels(ARRAY_SIZE, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
-
-const uint8_t ARRAY_SIZE = 5;
-uint8_t tomb[ARRAY_SIZE] = new uint8_t[5];
-uint8_t allapot;
-uint8_t rendezes = 0;
-uint8_t* tombTemp;
-
 SparkFun_APDS9960 apds = SparkFun_APDS9960();
 uint8_t isr_flag = 0;
-
-#define NEOPIXEL_PIN 4
-#define APDS9960_INT    5
-#define RECEIVER_PIN 9
-#define GREEN 0, 150, 0
-#define RED 150, 0 , 0
-#define BLUE 131, 238, 255
-#define DELAYVAL 1000
 
 void setup() {
   Serial.begin(9600);
@@ -42,13 +49,13 @@ void setup() {
   apds.enableGestureSensor(true);
   IrReceiver.begin(RECEIVER_PIN, ENABLE_LED_FEEDBACK); //start the receiver
   // put your setup code here, to run once:
-  tombTemp = (uint8_t *)malloc(sizeof(uint8_t) * ARRAY_SIZE);
+  tomb = (uint8_t *)malloc(sizeof(uint8_t) * ARRAY_SIZE);
   lcd.init();
   //lcd.init();
   lcd.backlight();
   pixels.begin();
   lcd.print("Tombfeltoltes");
-  delay(1000);
+  delay(ONESECOND);
   lcd.clear();
   allapot = TOMBFELTOLTES;
 }
@@ -60,13 +67,11 @@ void loop() {
 		case TOMBFELTOLTES:
 			receiverHandling2();
 			break;
-		case TOMBFELTOLTVE:
+		case FELTOLTVE:
 			if (isr_flag == 1)
 			{
-			detachInterrupt(0);
-			rendezes = handleGesture();
-			isr_flag = 0;
-			attachInterrupt(0, interruptRoutine, FALLING);
+        //GESTURE HANDLING
+        rendezes = BUBOREK;
 			}
 			delay(250);
 		case RENDEZES:
@@ -94,20 +99,19 @@ uint8_t handleGesture() {
 		switch ( apds.readGesture() ) {
 		case DIR_UP:
 			Serial.println("UP");
-			valasztottRendezo = 4;
+			valasztottRendezo = BESZURO;
 		case DIR_DOWN:
 			Serial.println("DOWN");
-			valasztottRendezo = 3;
+			valasztottRendezo = KOKTEL;
 		case DIR_LEFT:
 			Serial.println("LEFT");
-			valasztottRendezo = 2;
+			valasztottRendezo = BUBOREK;
 		case DIR_RIGHT:
 			Serial.println("RIGHT");
-			valasztottRendezo = 1;
+			valasztottRendezo = MINIMUM;
 		default:
 			valasztottRendezo = 0;
 			Serial.println("NONE");
-			
 		}
 		allapot = RENDEZES;
 		return valasztottRendezo;
@@ -121,16 +125,16 @@ uint8_t handleGesture() {
 void rendez(){
   switch (rendezes)
   {
-	case 1:
+	case BUBOREK:
 		bubbleSort();
 		break;
-	case 2:
+	case KOKTEL:
 		cocktailSort();
 		break;
-	case 3:
+	case MINIMUM:
 		minSelectSort();
 		break;
-	case 4:
+	case BESZURO:
 		insertionSort();
 		break;
 	default:
@@ -139,17 +143,17 @@ void rendez(){
 }
 void lightupArray()
 {
-  for (uint8_t i = 0; i < ARRAY_SIZE; i++)
+  for (uint8_t helyesSzamjegyekSzama = 0; helyesSzamjegyekSzama < ARRAY_SIZE; helyesSzamjegyekSzama++)
   {
-    pixels.setPixelColor(i, pixels.Color(BLUE)); // light blue
+    pixels.setPixelColor(helyesSzamjegyekSzama, pixels.Color(BLUE)); // light blue
     pixels.show();
-    delay(DELAYVAL);
+    delay(ONESECOND);
   }
 }
 void printArr(uint8_t tomb[], uint8_t len) {
-  uint8_t i;
-  for (i = 0; i < len; ++i) {
-    lcd.print(String(String(tomb[i]) + ' '));
+  uint8_t helyesSzamjegyekSzama;
+  for (helyesSzamjegyekSzama = 0; helyesSzamjegyekSzama < len; ++helyesSzamjegyekSzama) {
+    lcd.print(String(String(tomb[helyesSzamjegyekSzama]) + ' '));
   }
 }
 void swap(uint8_t *x1, uint8_t *x2)
@@ -167,52 +171,52 @@ void minSelectSort()
   lcd.setCursor(0, 1);
   lcd.print("Calculating...");
   lightupArray();
-  delay(DELAYVAL);
-  uint8_t min_i, i, j;
-  for (i = 0; i < ARRAY_SIZE - 1; i++)
+  delay(ONESECOND);
+  uint8_t min_i, helyesSzamjegyekSzama, j;
+  for (helyesSzamjegyekSzama = 0; helyesSzamjegyekSzama < ARRAY_SIZE - 1; helyesSzamjegyekSzama++)
   {
-    pixels.setPixelColor(i, pixels.Color(RED)); // az aktuális kiválasztott elem, aminek a helyére megy a minimum
+    pixels.setPixelColor(helyesSzamjegyekSzama, pixels.Color(RED)); // az aktuális kiválasztott elem, aminek a helyére megy a minimum
     pixels.show();
-    min_i = i;
-    for (j = (uint8_t)(i + 1); j < ARRAY_SIZE; j++)
+    min_i = helyesSzamjegyekSzama;
+    for (j = (uint8_t)(helyesSzamjegyekSzama + 1); j < ARRAY_SIZE; j++)
     {
       pixels.setPixelColor(j, pixels.Color(RED)); // amit hasonlít, keresi minimumot
       pixels.show();
       if (tomb[j] < tomb[min_i])
         min_i = j;
-      delay(DELAYVAL); //egy ideig piros
+      delay(ONESECOND); //egy ideig piros
       pixels.setPixelColor(j, pixels.Color(BLUE)); // visszaváltja kékre
       pixels.show();
     }
 
-    if (min_i != i)
+    if (min_i != helyesSzamjegyekSzama)
     {
       pixels.setPixelColor(min_i, pixels.Color(GREEN)); // a minimum helyén zöldre vált
       pixels.show(); 
-      delay(DELAYVAL);
-      swap(&tomb[i], &tomb[min_i]); //csere
-      pixels.setPixelColor(i, pixels.Color(GREEN));  //ahova teszi a minimumot, az lesz zöld
+      delay(ONESECOND);
+      swap(&tomb[helyesSzamjegyekSzama], &tomb[min_i]); //csere
+      pixels.setPixelColor(helyesSzamjegyekSzama, pixels.Color(GREEN));  //ahova teszi a minimumot, az lesz zöld
       pixels.setPixelColor(min_i, pixels.Color(RED)); // a cserélt elem piros lesz
       pixels.show();
-      delay(DELAYVAL); //vár
+      delay(ONESECOND); //vár
       pixels.setPixelColor(min_i, pixels.Color(BLUE)); // visszavált az alapszínre, kékre
       pixels.show();
-      delay(DELAYVAL);
+      delay(ONESECOND);
     }
     else
     {
-      pixels.setPixelColor(i, pixels.Color(GREEN)); //ha helyben van a legkisebb, akkor egyből zöldre vált, a rendezett rész folyamatosan zölddé válik
+      pixels.setPixelColor(helyesSzamjegyekSzama, pixels.Color(GREEN)); //ha helyben van a legkisebb, akkor egyből zöldre vált, a rendezett rész folyamatosan zölddé válik
       pixels.show();
-      delay(DELAYVAL);
+      delay(ONESECOND);
     }
   }
-  pixels.setPixelColor(i, pixels.Color(GREEN)); //ha helyben van a legkisebb, akkor egyből zöldre vált, a rendezett rész folyamatosan zölddé válik
+  pixels.setPixelColor(helyesSzamjegyekSzama, pixels.Color(GREEN)); //ha helyben van a legkisebb, akkor egyből zöldre vált, a rendezett rész folyamatosan zölddé válik
   pixels.show();
 
   lcd.setCursor(0, 1);
   lcd.print("R:");
   printArr(tomb, ARRAY_SIZE);
-  delay(3000);  
+  delay(ONESECOND*3);  
   allapot = CLEAR;
 }
 void bubbleSort()
@@ -223,19 +227,17 @@ void bubbleSort()
   printArr(tomb, ARRAY_SIZE);
   lcd.setCursor(0, 1);
   lcd.print("Calculating...");
-  /*uint8_t *copy = (uint8_t *)malloc(sizeof(uint8_t) * ARRAY_SIZE);
-  memcpy(copy, tomb, ARRAY_SIZE);*/
-  lightupArray(); //felvillan minden kékkel
-  delay(DELAYVAL);
-  uint8_t i, j;
-  for (i = 0; i < ARRAY_SIZE - 1; i++)
+  lightupArray();
+  delay(ONESECOND);
+  uint8_t helyesSzamjegyekSzama, j;
+  for (helyesSzamjegyekSzama = 0; helyesSzamjegyekSzama < ARRAY_SIZE - 1; helyesSzamjegyekSzama++)
   {
-    for (j = 0; j < ARRAY_SIZE - i - 1; j++)
+    for (j = 0; j < ARRAY_SIZE - helyesSzamjegyekSzama - 1; j++)
     {
       pixels.setPixelColor(j, pixels.Color(RED)); //szomszédos elemeket pirosra váltja
       pixels.setPixelColor(j + 1, pixels.Color(RED));
       pixels.show();
-      delay(DELAYVAL);
+      delay(ONESECOND);
       if (tomb[j] > tomb[j + 1])
       {
         swap(&tomb[j], &tomb[j + 1]);
@@ -243,15 +245,15 @@ void bubbleSort()
       pixels.setPixelColor(j, pixels.Color(BLUE)); //a szomszédos elemeket visszaváltja kékre
       pixels.setPixelColor(j + 1, pixels.Color(BLUE));
       pixels.show();
-      delay(DELAYVAL);
+      delay(ONESECOND);
     }
-    pixels.setPixelColor(ARRAY_SIZE - i - 1, pixels.Color(GREEN)); //a rendezett elem az utolsó lesz
+    pixels.setPixelColor(ARRAY_SIZE - helyesSzamjegyekSzama - 1, pixels.Color(GREEN)); //a rendezett elem az utolsó lesz
     pixels.show();
-    delay(DELAYVAL);
+    delay(ONESECOND);
   }
   pixels.setPixelColor(0, pixels.Color(GREEN)); //a rendezett elem az utolsó lesz
   pixels.show();
-  delay(DELAYVAL);
+  delay(ONESECOND);
 
   lcd.setCursor(0, 1);
   lcd.print("R:");
@@ -268,51 +270,51 @@ void cocktailSort()
   lcd.setCursor(0, 1);
   lcd.print("Calculating...");
   lightupArray();
-  delay(DELAYVAL);
-  uint8_t i, j, k;
-  for (i = 0; i < ARRAY_SIZE - 1; i++)
+  delay(ONESECOND);
+  uint8_t helyesSzamjegyekSzama, j, k;
+  for (helyesSzamjegyekSzama = 0; helyesSzamjegyekSzama < ARRAY_SIZE - 1; helyesSzamjegyekSzama++)
   {
-    for (j = i; j < ARRAY_SIZE - i - 1; j++) //felfelé buborékol
+    for (j = helyesSzamjegyekSzama; j < ARRAY_SIZE - helyesSzamjegyekSzama - 1; j++) //felfelé buborékol
     {
       pixels.setPixelColor(j, pixels.Color(RED)); 
       pixels.setPixelColor(j + 1, pixels.Color(RED));
       pixels.show();
-      delay(DELAYVAL);
+      delay(ONESECOND);
       if (tomb[j] > tomb[j + 1])
         swap(&tomb[j], &tomb[j + 1]);
       pixels.setPixelColor(j, pixels.Color(BLUE));
       pixels.setPixelColor(j + 1, pixels.Color(BLUE));
       pixels.show();
-      delay(DELAYVAL);
+      delay(ONESECOND);
     }
     pixels.setPixelColor(j, pixels.Color(GREEN));
     pixels.show();
-    delay(DELAYVAL);
-    k = (uint8_t)(ARRAY_SIZE - i - 2);
+    delay(ONESECOND);
+    k = (uint8_t)(ARRAY_SIZE - helyesSzamjegyekSzama - 2);
 
-    while (k > i)
+    while (k > helyesSzamjegyekSzama)
     {
       pixels.setPixelColor(k, pixels.Color(RED));
       pixels.setPixelColor(k - 1, pixels.Color(RED));
       pixels.show();
-      delay(DELAYVAL);
+      delay(ONESECOND);
       if (tomb[k - 1] > tomb[k])
         swap(&tomb[k - 1], &tomb[k]);
       
       pixels.setPixelColor(k, pixels.Color(BLUE));
       pixels.setPixelColor(k - 1, pixels.Color(BLUE));
       pixels.show();
-      delay(DELAYVAL);
+      delay(ONESECOND);
       k--;
     }
     pixels.setPixelColor(k, pixels.Color(GREEN));
     pixels.show();
-    delay(DELAYVAL);
+    delay(ONESECOND);
 
     lcd.setCursor(0, 1);
     lcd.print("R:");
     printArr(tomb, ARRAY_SIZE);
-    delay(3000);  
+    delay(3*ONESECOND);  
     allapot = CLEAR;  
   }
 }
@@ -326,19 +328,19 @@ void insertionSort()
   lcd.print("Calculating...");
   
   lightupArray(); //felvillantjuk a tömb elemeit kékkel
-  delay(DELAYVAL);
-  uint8_t i, elementToInsert, j;
+  delay(ONESECOND);
+  uint8_t helyesSzamjegyekSzama, elementToInsert, j;
   pixels.setPixelColor(0, pixels.Color(GREEN)); //az első elem az fixen rendezett
   pixels.show();
-  delay(DELAYVAL);
+  delay(ONESECOND);
 
-  for (i = 1; i < ARRAY_SIZE; i++) //a 0. elem az rendezett, ezért 1-től kezdjük a beszúrást
+  for (helyesSzamjegyekSzama = 1; helyesSzamjegyekSzama < ARRAY_SIZE; helyesSzamjegyekSzama++) //a 0. elem az rendezett, ezért 1-től kezdjük a beszúrást
   {
-    elementToInsert = tomb[i]; //kimentjük a beszúrandó elemet
-    j = i - 1; //a beszúrandó elem előtti elem, a legutolsó rendezett rész eleme
-    pixels.setPixelColor(i, pixels.Color(RED)); //beszúrásra kiválasztott elemet fevillantjuk pirossal
+    elementToInsert = tomb[helyesSzamjegyekSzama]; //kimentjük a beszúrandó elemet
+    j = helyesSzamjegyekSzama - 1; //a beszúrandó elem előtti elem, a legutolsó rendezett rész eleme
+    pixels.setPixelColor(helyesSzamjegyekSzama, pixels.Color(RED)); //beszúrásra kiválasztott elemet fevillantjuk pirossal
     pixels.show();
-    delay(DELAYVAL);
+    delay(ONESECOND);
     while (j >= 0 && tomb[j] > elementToInsert) //megkeressük a beszúrandó elem helyét a rendezett részen belül
     {
       
@@ -347,73 +349,70 @@ void insertionSort()
       pixels.show();
       tomb[j + 1] = tomb[j];
       j = (uint8_t)(j - 1);
-      delay(DELAYVAL);
+      delay(ONESECOND);
     }
     tomb[j + 1] = elementToInsert;
     pixels.setPixelColor(j+1, pixels.Color(GREEN)); //beszúrásra kiválasztott elemet fevillantjuk pirossal
     pixels.show();
-    delay(DELAYVAL);
+    delay(ONESECOND);
   }
 
     lcd.setCursor(0, 1);
     lcd.print("R:");
     printArr(tomb, ARRAY_SIZE); 
-    delay(3000);  
+    delay(ONESECOND);  
     allapot = CLEAR;
 }
 #pragma endregion Rendezes
 
-char i = 0;
-char j = 0;
-char* elso;
-char* ketto;
-char* temp;
-char* temptomb = (char *)malloc(sizeof(char) * 3);
-
 void arrayFillWithRC(char* input) //elmenti a rendezendő tömb elemeit
 {
+  uint8_t helyesSzamjegyekSzama = 0;
+  uint8_t j = 0;
+  char *elsoSzamjegy;
+  char *masodikSzamjegy;
+  char *bevittSzamSzovegkent = (char *)malloc(sizeof(char) * 3);
   //2 elemű string 
   if(j < 5)
   {
     
-    if (i == 0)
+    if (helyesSzamjegyekSzama == 0)
     {
 
-      elso = input;
-      temptomb[0] = input[0];
-      i++;
+      elsoSzamjegy = input;
+      bevittSzamSzovegkent[0] = input[0];
+      helyesSzamjegyekSzama++;
       
     }
-    else if(i==1)
+    else if(helyesSzamjegyekSzama==1)
     {
-      ketto = input;
-      temptomb[1] = ketto[0];
-      if(temptomb[0] == 0)
+      masodikSzamjegy = input;
+      bevittSzamSzovegkent[1] = masodikSzamjegy[0];
+      if(bevittSzamSzovegkent[0] == 0)
       {
-        tomb[j] = temptomb[1];
+        tomb[j] = bevittSzamSzovegkent[1];
       }
-      temptomb[2] = '\0';
-      tombTemp[j] = atoi(temptomb);
+      bevittSzamSzovegkent[2] = '\0';
+      tomb[j] = atoi(bevittSzamSzovegkent);
 
-      i++;
+      helyesSzamjegyekSzama++;
       Serial.print(j);
       Serial.print(". elem elmentve, az elem: ");
-      Serial.println(tombTemp[j]);
+      Serial.println(tomb[j]);
       j++;
     }
     else
     {
-      i = 0;
+      helyesSzamjegyekSzama = 0;
     }
   }
   else
   {
     lcd.clear();
     lcd.print("Tomb feltoltve!");
-    ConvertArray();
     lcd.setCursor(0,1);
     printArr(tomb, ARRAY_SIZE);
-    allapot = TOMBFELTOLTVE;
+    allapot = FELTOLTVE;
   } 
 }
 
@@ -433,7 +432,7 @@ void receiverHandling2(){ //returns string "0"..."9", "OK"
       case 3810328320: lcd.print("8"); arrayFillWithRC("8"); break;// Button 8
       case 2774204160: lcd.print("9"); arrayFillWithRC("9"); break;// Button 9
       case 3208707840: lcd.print("OK"); arrayFillWithRC("OK"); lcd.clear();break;
-      default: //lcd.print("Nem szamjegy"); 
+      default: //lcd.print("Nem szamjegy");
         break; //Not Defined
     }
     lcd.print(" ");
@@ -441,15 +440,6 @@ void receiverHandling2(){ //returns string "0"..."9", "OK"
   }
   else if(tomb[0] != 0)
   { 
-    allapot = TOMBFELTOLTVE;  
+    allapot = FELTOLTVE;  
   }
-}
-
-//Kell ez még???
-void ConvertArray(){
-  	for (uint8_t i=0; i < ARRAY_SIZE; i++)
-	{
-		tomb[i] = tombTemp[i];  
-	
-	}
 }
