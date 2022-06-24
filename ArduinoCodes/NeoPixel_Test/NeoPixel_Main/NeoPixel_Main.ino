@@ -42,29 +42,32 @@ void setup() {
   //lcd.init();
   lcd.backlight();
   pixels.begin();
+  lcd.setCursor(0,0);
   lcd.print("Tombfeltoltes");
   delay(1000);
   lcd.clear();
-  
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   if(allapot == 1){
-   
     receiverHandling2();
-
   }
   if(allapot == 2 )
   {
+    /*
     if(isr_flag == 1)
     {
+      
       detachInterrupt(0);
       handleGesture();
       isr_flag = 0;
       attachInterrupt(0, interruptRoutine, FALLING);
       
-    }
+      
+    }*/
+    rendezes = 2;
+    allapot = 3;
     delay(250);
   }
   if (allapot == 3)  
@@ -89,7 +92,10 @@ void loop() {
   if(allapot == 4){
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Program vége");
+    lcd.print("Program vege");
+    Serial.println("Program vege");
+    allapot=5;
+    
   }
 }
 
@@ -99,6 +105,9 @@ void interruptRoutine() {
 }
 
 void handleGesture() {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Valassz algoritmust!");
     if ( apds.isGestureAvailable() ) {
       Serial.println("elsoif");
     switch ( apds.readGesture() ) {
@@ -410,6 +419,7 @@ void arrayFillWithRC(char* input) //elmenti egy ciklusban a rendezendő tömb el
   {
     lcd.clear();
     lcd.print("Tomb feltoltve!");
+    Serial.println("Tomb feltoltve!");
     ConvertArray();
     lcd.setCursor(0,1);
     printArr(tomb, ARRAY_SIZE);
